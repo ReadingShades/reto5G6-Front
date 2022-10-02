@@ -12,12 +12,13 @@ const SUBMIT_BUTTON = $('#submit-button-create');
 // Preparation on load page
 $(document).ready(function () {
     window.onload = loadAndDrawCategoryTable();
-    SUBMIT_BUTTON.on('click', function () {
+    SUBMIT_BUTTON.on('click', async function () {
         let data = {
+            //"id": null,
             "name": NAME_ENTRY.val(),
             "description": DESCRIPTION_ENTRY.val(),
         }
-        let status = postCategory(data);
+        let status = await postCategory(data);
         console.log(status);
     });
     // DOM add event listener for any and all elements with the corresponding criteria    
@@ -26,23 +27,49 @@ $(document).ready(function () {
 
 // GET
 // GET:ALL
-export function getCategoryAll() {
-    return ajaxFunctions.getAll(URL_ENDPOINT_CATEGORY);
+export async function getCategoryAll() {
+    return await ajaxFunctions.getAll(URL_ENDPOINT_CATEGORY)
+        .then(response => {
+            //console.log(response);
+            return response;
+        }).catch(e => {
+            console.log(e);
+        });
 }
 // GET:ONE
-export function getCategoryOne(categoryID) {
-    return ajaxFunctions.getOne(URL_ENDPOINT_CATEGORY, categoryID);
+export async function getCategoryOne(categoryID) {
+    return await ajaxFunctions.getOne(URL_ENDPOINT_CATEGORY, categoryID)
+        .then(response => {
+            console.log(response);
+            return response;
+        }).catch(e => {
+            console.log(e);
+        });
 }
 // POST
-function postCategory(data) {
+/**
+ * 
+ * @param {Object} data - a JSON object containing the data to be sent to the server to create a new category
+ * @param {string} data.id - the ID of the new category, null for new categories
+ * @param {string} data.name - the name of the new category
+ * @param {string} data.description - the description of the new category
+ * @returns {object} - a JSON/AJAX response object containing the operation results
+ */
+async function postCategory(data) {
     //console.log(data);    
-    let ajaxResponse = ajaxFunctions.postObject(URL_ENDPOINT_CATEGORY, data);
+    let ajaxResponse = await ajaxFunctions.postObject(URL_ENDPOINT_CATEGORY, data)
+        .then(response => {
+            console.log(response);
+            return response;
+        }).catch(e => {
+            console.log(e);
+        });
     cleanFormEntries(...CATEGORY_PROPERTIES_IDENTIFIERS);
     loadAndDrawCategoryTable();
     return ajaxResponse;
 }
 // PUT
-function putCategory(categoryID) {
+async function putCategory(categoryID) {
     let name = $(`#category-name-elem-${categoryID}`).html();
     let description = $(`#category-description-elem-${categoryID}`).html();
     const data = {
@@ -50,20 +77,35 @@ function putCategory(categoryID) {
         "name": name,
         "description": description,
     }
-    let response = ajaxFunctions.putObject(URL_ENDPOINT_CATEGORY, data);
-    console.log(response);
-    //loadAndDrawCategoryTable();
-    //loadAndDrawCategoryTable();
+    let response = await ajaxFunctions.putObject(URL_ENDPOINT_CATEGORY, data)
+        .then(response => {
+            console.log(response);
+            return response;
+        }).catch(e => {
+            console.log(e);
+        });
+    loadAndDrawCategoryTable();
+    return response;
 }
 // DELETE
 // DELETE:ALL
-export function deleteCategoryAll() {
-    ajaxFunctions.deleteAll(URL_ENDPOINT_CATEGORY);
+export async function deleteCategoryAll() {
+    await ajaxFunctions.deleteAll(URL_ENDPOINT_CATEGORY).then(response => {
+        console.log(response);
+        return response;
+    }).catch(e => {
+        console.log(e);
+    });
+    loadAndDrawCategoryTable();
 }
 // DELETE:ONE
-export function deleteCategoryOne(categoryID) {
-    ajaxFunctions.deleteOne(URL_ENDPOINT_CATEGORY, categoryID);
-    loadAndDrawCategoryTable();
+export async function deleteCategoryOne(categoryID) {
+    await ajaxFunctions.deleteOne(URL_ENDPOINT_CATEGORY, categoryID).then(response => {
+        console.log(response);
+        return response;
+    }).catch(e => {
+        console.log(e);
+    });
     loadAndDrawCategoryTable();
 }
 
