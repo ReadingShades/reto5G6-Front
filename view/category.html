@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link rel="stylesheet" href="../css/main.css" /> -->
+    <title>Rent-A-Car - Categoria</title>
+  </head>
+  <body>
+    <section class="text-gray-600 body-font relative">
+      <div class="frame-root shadow border-2 border-black flex">
+        <div class="frame-content lg:w-1/2 md:w-1/2">
+          <section class="text-gray-600 body-font">
+            <div
+              class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
+            >
+              <div
+                class="lg:w80 md:w80 center bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
+              >
+                <div>
+                  <h1
+                    class="title-font font-medium text-3xl text-gray-900 justify-center flex"
+                  >
+                    Categoria
+                  </h1>
+                  <br />
+                  <p
+                    class="title-font font-light text-sm text-gray-900 justify-center flex"
+                  >
+                    Crear nueva categoria
+                  </p>
+                </div>
+                <div class="relative mb-4">
+                  <label
+                    for="category-name"
+                    class="leading-7 text-sm text-gray-600"
+                    >Nombre</label
+                  ><input
+                    type="text"
+                    id="category-name"
+                    name="category-name"
+                    minlength="1"
+                    maxlength="45"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  />
+                </div>
+                <div class="relative mb-4">
+                  <label
+                    for="category-description"
+                    class="leading-7 text-sm text-gray-600"
+                    >Descripcion</label
+                  ><input
+                    type="text"
+                    id="category-description"
+                    name="category-description"
+                    minlength="1"
+                    maxlength="250"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  />
+                </div>
+                <button
+                  id="submit-button-create"
+                  class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                >
+                  Crear
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="frame-content lg:w-2/3 md:w-2/3">
+          <section class="text-gray-600 body-font">
+            <div
+              class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
+            >
+              <div
+                class="lg:w80 md:w80 center bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
+              >
+                <h1
+                  class="title-font font-medium text-3xl text-gray-900 justify-center flex"
+                >
+                  Categorias disponibles
+                </h1>
+                <div
+                  id="tableCategories"
+                  class="relative mb-4 overflow-scroll"
+                ></div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <footer
+          class="lg:w100 md:w100 p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800"
+        >
+          <ul class="flex">
+            <li class="flex-1 mr-2">
+              <a
+                href="./machine.html"
+                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+                >Maquina</a
+              >
+            </li>
+            <li class="flex-1 mr-2">
+              <a
+                href="./client.html"
+                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+                >Cliente</a
+              >
+            </li>
+            <li class="flex-1 mr-2">
+              <a
+                href="./message.html"
+                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+                >Mensajes</a
+              >
+            </li>
+            <li class="flex-1 mr-2">
+              <a
+                href="./reservation.html"
+                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+                >Reservaciones</a
+              >
+            </li>
+            <li class="flex-1 mr-2">
+              <a
+                href="../index.html"
+                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+                >Index</a
+              >
+            </li>
+          </ul>
+        </footer>
+      </div>
+    </section>
+
+    <!--Scripts-->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="module" src="../js/categoryFunctions.js"></script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "FRONTEND-FINAL",
+  "version": "1.0.0",
+  "description": "Front-end app for MinTic reto 5 challenge",
+  "main": "index.html",
+  "author": "ReadingShades <42413498+ReadingShades@users.noreply.github.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tailwindcss -i ./input.css -o ./css/main.css",
+    "watch": "tailwindcss -i ./input.css -o ./css/main.css --watch"
+  },
+  "dependencies": {
+    "jquery": "^3.6.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.12",
+    "postcss": "^8.4.17",
+    "postcss-import": "^15.0.0",
+    "tailwindcss": "^3.1.8"
+  }
+}

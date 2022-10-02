@@ -1,0 +1,12 @@
+{
+  "name": "FRONTEND-FINAL",
+  "version": "1.0.0",
+  "description": "Front-end app for MinTic reto 5 challenge",
+  "main": "index.html",
+  "author": "ReadingShades <42413498+ReadingShades@users.noreply.github.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "jquery": "^3.6.1"
+  }
+}
