@@ -90,22 +90,24 @@ async function putCategory(categoryID) {
 // DELETE
 // DELETE:ALL
 export async function deleteCategoryAll() {
-    await ajaxFunctions.deleteAll(URL_ENDPOINT_CATEGORY).then(response => {
-        console.log(response);
-        return response;
-    }).catch(e => {
-        console.log(e);
-    });
+    await ajaxFunctions.deleteAll(URL_ENDPOINT_CATEGORY)
+        .then(response => {
+            console.log(response);
+            return response;
+        }).catch(e => {
+            console.log(e);
+        });
     loadAndDrawCategoryTable();
 }
 // DELETE:ONE
 export async function deleteCategoryOne(categoryID) {
-    await ajaxFunctions.deleteOne(URL_ENDPOINT_CATEGORY, categoryID).then(response => {
-        console.log(response);
-        return response;
-    }).catch(e => {
-        console.log(e);
-    });
+    await ajaxFunctions.deleteOne(URL_ENDPOINT_CATEGORY, categoryID)
+        .then(response => {
+            console.log(response);
+            return response;
+        }).catch(e => {
+            console.log(e);
+        });
     loadAndDrawCategoryTable();
 }
 
@@ -128,11 +130,12 @@ function drawCategoryTable(json_categories) {
     myTable += "<thead class = 'bg-white border-b'>";
     myTable += "<tr>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left'>id</th>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left'>name</th>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left'>description</th>";
-    //myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left'>machines</th>";    
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left'>EDIT</th>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left '>DELETE</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>name</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>description</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>machines</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>DATA</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>EDIT</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center '>DELETE</th>";
     myTable += "</tr>    ";
     myTable += "</thead>";
     for (let i = 0; i < json_categories.length; i++) {
@@ -140,7 +143,8 @@ function drawCategoryTable(json_categories) {
         myTable += `<td id='category-id-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap'>${json_categories[i].id}</td>`;
         myTable += `<td id='category-name-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].name}</td>`;
         myTable += `<td id='category-description-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].description}</td>`;
-        //myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].machines}</td>`;        
+        myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center'>${json_categories[i].machines.length}</td>`;
+        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='show-data-${json_categories[i].id}' data-machines='${JSON.stringify(json_categories[i].machines)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW</button></td>`;
         myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='edit-data-${json_categories[i].id}' class='bg-green-600 px-6 py-4 rounded focus:outline-none hover:border-green-200'>EDIT</button></td>`;
         myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='delete-data-${json_categories[i].id}' class='bg-red-800 px-6 py-4 rounded focus:outline-none hover:border-red-200'>DELETE</button></td>`;
 
@@ -151,9 +155,47 @@ function drawCategoryTable(json_categories) {
     loadTableTriggers(json_categories);
 }
 
+function showMachineData(json_machines) {
+    // target table div
+    let machineTable = $("#tableMachines");
+    machineTable.html('');
+    // Clear machine table
+    let machineTableData = $('#machineTableData');
+    if (machineTableData.length) {
+        machineTableData.remove();
+    }
+    // convert json_machines string data to JSON
+    json_machines = JSON.parse(json_machines);
+    let myTable = "<table id='machineTableData' class = 'table-auto min-w-full bg-purple-100'>";
+    myTable += "<thead class = 'bg-white border-b'>";
+    myTable += "<tr>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left'>id</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>name</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>brand</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>year</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>description</th>";
+    myTable += "</tr>    ";
+    myTable += "</thead>";
+    for (let i = 0; i < json_machines.length; i++) {
+        myTable += "<tr class='border-b bg-gray-800 boder-gray-900'>";
+        myTable += `<td id='category-id-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap'>${json_machines[i].id}</td>`;
+        myTable += `<td id='category-name-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' >${json_machines[i].name}</td>`;
+        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' >${json_machines[i].brand}</td>`;
+        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' >${json_machines[i].year}</td>`;
+        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' >${json_machines[i].description}</td>`;
+        myTable += "</tr>";
+    }
+    myTable += "</table>";
+    machineTable.html(myTable);
+};
+
 function loadTableTriggers(json_categories) {
     for (let i = 0; i < json_categories.length; i++) {
-        $(`#edit-data-${json_categories[i].id}`).one('click', function () {
+        $(`#show-data-${json_categories[i].id}`).on('click', function () {
+            let json_machines = $(`#show-data-${json_categories[i].id}`).attr('data-machines');
+            showMachineData(json_machines);
+        });
+        $(`#edit-data-${json_categories[i].id}`).on('click', function () {
             putCategory(json_categories[i].id);
         });
         $(`#delete-data-${json_categories[i].id}`).one('click', function () {

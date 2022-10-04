@@ -9,9 +9,10 @@
     <title>Rent-A-Car - Categoria</title>
   </head>
   <body>
+    <!-- Main -->
     <section class="text-gray-600 body-font relative">
       <div class="frame-root shadow border-2 border-black flex">
-        <div class="frame-content lg:w-1/2 md:w-1/2">
+        <div class="frame-content lg:w-1/3 md:w-1/3">
           <section class="text-gray-600 body-font">
             <div
               class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
@@ -70,7 +71,7 @@
             </div>
           </section>
         </div>
-        <div class="frame-content lg:w-2/3 md:w-2/3">
+        <div class="frame-content lg:w-2.5/4 md:w-2.5/4">
           <section class="text-gray-600 body-font">
             <div
               class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
@@ -83,6 +84,7 @@
                 >
                   Categorias disponibles
                 </h1>
+                ><br />
                 <div
                   id="tableCategories"
                   class="relative mb-4 overflow-scroll"
@@ -90,49 +92,75 @@
               </div>
             </div>
           </section>
-        </div>
-        <footer
-          class="lg:w100 md:w100 p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800"
-        >
-          <ul class="flex">
-            <li class="flex-1 mr-2">
-              <a
-                href="./machine.html"
-                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
-                >Maquina</a
+        </div>        
+    </section>
+    <!-- machine data -->
+    <section class="text-gray-600 body-font relative">
+      <div class="frame-content">
+        <section class="text-gray-600 body-font">
+          <div
+            class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
+          >
+            <div
+              class="lg:w80 md:w80 center bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
+            >
+              <h1
+                class="title-font font-medium text-3xl text-gray-900 justify-center flex"
               >
-            </li>
-            <li class="flex-1 mr-2">
-              <a
-                href="./client.html"
-                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
-                >Cliente</a
-              >
-            </li>
-            <li class="flex-1 mr-2">
-              <a
-                href="./message.html"
-                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
-                >Mensajes</a
-              >
-            </li>
-            <li class="flex-1 mr-2">
-              <a
-                href="./reservation.html"
-                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
-                >Reservaciones</a
-              >
-            </li>
-            <li class="flex-1 mr-2">
-              <a
-                href="../index.html"
-                class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
-                >Index</a
-              >
-            </li>
-          </ul>
-        </footer>
+                Maquinas
+              </h1>
+              <div
+                id="tableMachines"
+                class="relative mb-4 overflow-scroll"
+              ></div>
+            </div>
+          </div>
+        </section>
       </div>
+    </div>
+    </section>
+    <section class="text-gray-600 body-font relative">
+      <footer
+        class="flex p-4 bg-white rounded-lg shadow md:items-center md:justify-between md:p-6 dark:bg-gray-800"
+      >
+        <ul class="flex">
+          <li class="flex-1 mr-2">
+            <a
+              href="./machine.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Maquina</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./client.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Cliente</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./message.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Mensajes</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./reservation.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Reservaciones</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="../index.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Index</a
+            >
+          </li>
+        </ul>
+      </footer>
     </section>
 
     <!--Scripts-->
