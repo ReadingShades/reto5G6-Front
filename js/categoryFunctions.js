@@ -169,7 +169,7 @@ function showMachineData(json_machines) {
     let myTable = "<table id='machineTableData' class = 'table-auto min-w-full bg-purple-100'>";
     myTable += "<thead class = 'bg-white border-b'>";
     myTable += "<tr>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left'>id</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>id</th>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>name</th>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>brand</th>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>year</th>";
@@ -178,11 +178,11 @@ function showMachineData(json_machines) {
     myTable += "</thead>";
     for (let i = 0; i < json_machines.length; i++) {
         myTable += "<tr class='border-b bg-gray-800 boder-gray-900'>";
-        myTable += `<td id='category-id-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap'>${json_machines[i].id}</td>`;
-        myTable += `<td id='category-name-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' >${json_machines[i].name}</td>`;
-        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' >${json_machines[i].brand}</td>`;
-        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' >${json_machines[i].year}</td>`;
-        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' >${json_machines[i].description}</td>`;
+        myTable += `<td id='category-id-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center'>${json_machines[i].id}</td>`;
+        myTable += `<td id='category-name-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].name}</td>`;
+        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].brand}</td>`;
+        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].year}</td>`;
+        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].description}</td>`;
         myTable += "</tr>";
     }
     myTable += "</table>";
