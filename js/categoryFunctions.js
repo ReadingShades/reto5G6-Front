@@ -13,16 +13,12 @@ const SUBMIT_BUTTON = $('#submit-button-create');
 $(document).ready(function () {
     window.onload = loadAndDrawCategoryTable();
     SUBMIT_BUTTON.on('click', async function () {
-        let data = {
-            //"id": null,
-            "name": NAME_ENTRY.val(),
-            "description": DESCRIPTION_ENTRY.val(),
+        let selectorData = getDataFields();
+        if (checkEditDataFields(selectorData)) {
+            let status = await postCategory(selectorData);
+            console.log(status);
         }
-        let status = await postCategory(data);
-        console.log(status);
     });
-    // DOM add event listener for any and all elements with the corresponding criteria    
-
 });
 
 // GET
@@ -196,10 +192,56 @@ function loadTableTriggers(json_categories) {
             showMachineData(json_machines);
         });
         $(`#edit-data-${json_categories[i].id}`).on('click', function () {
-            putCategory(json_categories[i].id);
+            let selectorData = getDataFields(json_categories[i].id);
+            if (checkEditDataFields(selectorData)) putCategory(json_categories[i].id);
         });
         $(`#delete-data-${json_categories[i].id}`).one('click', function () {
             deleteCategoryOne(json_categories[i].id);
         });
     }
+}
+
+function getDataFields(id = null) {
+    if (id) {
+        return ({
+            "name": $(`#category-name-elem-${id}`).text(),
+            "description": $(`#category-description-elem-${id}`).text(),
+        });
+    } else {
+        return ({
+            "name": NAME_ENTRY.val(),
+            "description": DESCRIPTION_ENTRY.val(),
+        });
+    }
+}
+
+function checkEditDataFields(selectorData) {
+    // pruebas de campo nombre
+    let editNameText = selectorData.name;
+    let isNameFieldNotEmptyTest = editNameText.length > 0;
+    let isNameFieldLessThan46CharLenTest = editNameText.length < 46;
+    let nameFieldTestBattery = isNameFieldNotEmptyTest && isNameFieldLessThan46CharLenTest;
+
+    // pruebas de campo descripcion
+    let editDescriptionText = selectorData.description;
+    let isDescriptionFieldNotEmptyTest = editDescriptionText.length > 0;
+    let isDescriptionFieldLessThan251CharLenTest = editDescriptionText.length < 251;
+    let descriptionFieldTestBattery = isDescriptionFieldNotEmptyTest && isDescriptionFieldLessThan251CharLenTest;
+
+    if (!nameFieldTestBattery || !descriptionFieldTestBattery) {
+        let errorMsg = '';
+        errorMsg += 'Error en entrada de datos \n';
+        if (!nameFieldTestBattery) {
+            errorMsg += 'El campo nombre esta mal formado (min = 0, max = 45) \n';
+            errorMsg += `Campo: nombre = ${editNameText}, longitud = ${editNameText.length} \n`;
+        }
+        if (!descriptionFieldTestBattery) {
+            errorMsg += 'El campo descripcion esta mal formado (min = 0, max = 250) \n';
+            errorMsg += `Campo: descripcion = ${editDescriptionText}, longitud = ${editDescriptionText.length} \n`;
+        }
+        console.error(errorMsg);
+        alert(errorMsg);
+        return false;
+    }
+    return true;
 }
