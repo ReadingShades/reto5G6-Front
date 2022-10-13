@@ -135,7 +135,7 @@ function drawCategoryTable(json_categories) {
     myTable += "</tr>    ";
     myTable += "</thead>";
     for (let i = 0; i < json_categories.length; i++) {
-        myTable += "<tr class='border-b bg-gray-800 boder-gray-900'>";
+        myTable += "<tr class='border-b bg-gray-800 border-gray-900'>";
         myTable += `<td id='category-id-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap'>${json_categories[i].id}</td>`;
         myTable += `<td id='category-name-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].name}</td>`;
         myTable += `<td id='category-description-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].description}</td>`;
@@ -151,7 +151,7 @@ function drawCategoryTable(json_categories) {
     loadTableTriggers(json_categories);
 }
 
-function showMachineData(json_machines) {
+function showMachineData(categoryName, json_machines) {
     // target table div
     let machineTable = $("#tableMachines");
     machineTable.html('');
@@ -162,7 +162,9 @@ function showMachineData(json_machines) {
     }
     // convert json_machines string data to JSON
     json_machines = JSON.parse(json_machines);
-    let myTable = "<table id='machineTableData' class = 'table-auto min-w-full bg-purple-100'>";
+    //console.log(json_machines);
+    let myTable = `<h1 class='title-font font-medium text-3xl text-gray-900 justify-center text-center'> Lista de maquinas (${categoryName}) </h1><br>`
+    myTable += "<table id='machineTableData' class = 'table-auto min-w-full bg-purple-100'>";
     myTable += "<thead class = 'bg-white border-b'>";
     myTable += "<tr>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>id</th>";
@@ -173,7 +175,7 @@ function showMachineData(json_machines) {
     myTable += "</tr>    ";
     myTable += "</thead>";
     for (let i = 0; i < json_machines.length; i++) {
-        myTable += "<tr class='border-b bg-gray-800 boder-gray-900'>";
+        myTable += "<tr class='border-b bg-gray-800 border-gray-900'>";
         myTable += `<td id='category-id-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center'>${json_machines[i].id}</td>`;
         myTable += `<td id='category-name-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].name}</td>`;
         myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].brand}</td>`;
@@ -183,13 +185,14 @@ function showMachineData(json_machines) {
     }
     myTable += "</table>";
     machineTable.html(myTable);
+    $("#machine-data-section").show();
 };
 
 function loadTableTriggers(json_categories) {
     for (let i = 0; i < json_categories.length; i++) {
         $(`#show-data-${json_categories[i].id}`).on('click', function () {
             let json_machines = $(`#show-data-${json_categories[i].id}`).attr('data-machines');
-            showMachineData(json_machines);
+            showMachineData(json_categories[i].name, json_machines);
         });
         $(`#edit-data-${json_categories[i].id}`).on('click', function () {
             let selectorData = getDataFields(json_categories[i].id);

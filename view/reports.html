@@ -4,18 +4,107 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <title>Rent-A-Car - Reportes</title>
   </head>
   <body>
-    <h1>Reportes</h1>
-    <ul>
-      <li><a href="./category.html">Categoria</a></li>
-      <li><a href="./client.html">Cliente</a></li>
-      <li><a href="./machine.html">Maquina</a></li>
-      <li><a href="./message.html">Mensajes</a></li>
-      <li><a href="./reservation.html">Reservaciones</a></li>
-      <li><a href="./reports.html">Reportes</a></li>
-      <li><a href="../index.html">Index</a></li>
-    </ul>
+    <!-- Title -->
+    <section>
+      <br />
+      <h1
+        class="title-font font-medium text-3xl text-gray-900 justify-center flex"
+      >
+        Reportes
+      </h1>
+      <br />
+    </section>
+    <!-- Content -->
+    <section>
+      <div class="container flex items-center justify-center">
+        <button
+          id="report-status"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Reporte Status Reservaciónes</button
+        ><br />
+        <button
+          id="report-dates"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Reporte Fechas Reservaciónes</button
+        ><br />
+        <button
+          id="report-clients"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Reporte Clientes Reservaciónes</button
+        ><br />
+      </div>
+
+      <div id="resultado1"></div>
+    </section>
+    <!-- Footer/Navbar -->
+    <section class="fixed bottom-0 left-0">
+      <footer
+        class="flex p-4 bg-white rounded-lg shadow md:items-center md:justify-between md:p-6 dark:bg-gray-800"
+      >
+        <ul class="flex">
+          <li class="flex-1 mr-2">
+            <a
+              href="./category.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Categoria</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./client.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Cliente</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./machine.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Maquina</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./message.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Mensajes</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./reservation.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Reservaciones</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./reports.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Reportes</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="../index.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Index</a
+            >
+          </li>
+        </ul>
+      </footer>
+    </section>
+
+    <!-- Scripts -->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="module" src="../js/reportFunctions.js"></script>
   </body>
 </html>
