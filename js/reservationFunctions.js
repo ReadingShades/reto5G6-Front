@@ -120,35 +120,45 @@ async function loadAndDrawReservationTable() {
     drawReservationTable(json_categories);
 }
 
-function drawReservationTable(json_categories) {
-    //console.log(json_categories);
-    let myTable = "<table class = 'table-auto min-w-full bg-purple-100'>";
-    myTable += "<thead class = 'bg-white border-b'>";
+function drawReservationTable(json_reservation_list) {
+    let myTable = "<table class = 'table-auto min-w-full bg-blue-400'>";
+    myTable += "<thead class = 'bg-blue-300 border-b'>";
     myTable += "<tr>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left'>id</th>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>name</th>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>description</th>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>machines</th>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>DATA</th>";
+    myTable += "<th scope='col' colspan='11' class='text-sm font-medium text-gray-900 px-6 py-4 text-center bg-blue-100'>Reservaciones</th>";
+    myTable += "</tr>    ";
+    myTable += "<tr>";
+    myTable += `<th scope='col' colspan='5' class='text-sm font-medium text-gray-900 px-6 py-4 text-center bg-blue-400'>Datos reservacion</th>`;
+    myTable += `<th scope='col' colspan='3' class='text-sm font-medium px-6 py-4 text-center bg-blue-600 text-white'>Datos cliente</th>`;
+    myTable += `<th scope='col' colspan='3' class='text-sm font-medium px-6 py-4 text-center bg-blue-500 text-white'>Datos maquina</th>`;
+    myTable += "</tr>    ";
+    myTable += "<tr>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>idReservation</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>startDate</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>devolutionDate</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>status</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>score</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>CLIENT_DATA</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>MACHINE_DATA</th>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>EDIT</th>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center '>DELETE</th>";
     myTable += "</tr>    ";
     myTable += "</thead>";
-    for (let i = 0; i < json_categories.length; i++) {
-        myTable += "<tr class='border-b bg-gray-800 boder-gray-900'>";
-        myTable += `<td id='reservation-id-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap'>${json_categories[i].id}</td>`;
-        myTable += `<td id='reservation-name-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].name}</td>`;
-        myTable += `<td id='reservation-description-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].description}</td>`;
-        myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center'>${json_categories[i].machines.length}</td>`;
-        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='show-data-${json_categories[i].id}' data-machines='${JSON.stringify(json_categories[i].machines)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW</button></td>`;
-        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='edit-data-${json_categories[i].id}' class='bg-green-600 px-6 py-4 rounded focus:outline-none hover:border-green-200'>EDIT</button></td>`;
+    for (let i = 0, limit = json_reservation_list.length; i < limit; i++) {
+        myTable += "<tr>";
+        myTable += `<td id='reservation-id-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].idReservation}</td>`;
+        myTable += `<td id='reservation-startdate-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center contenteditable='true''> ${json_reservation_list[i].startDate}</td>`;
+        myTable += `<td id='reservation-devolutiondate-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center contenteditable='true''> ${json_reservation_list[i].devolutionDate}</td>`;
+        myTable += `<td id='reservation-status-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center contenteditable='true''> ${json_reservation_list[i].status}</td>`;
+        myTable += `<td id='reservation-score-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center contenteditable='true''> ${json_reservation_list[i].score}</td>`;
+        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='show-data-client-${json_reservation_list[i].id}' data-machines='${JSON.stringify(json_reservation_list[i].client)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW CLIENT</button></td>`;
+        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='show-data-machine-${json_reservation_list[i].id}' data-machines='${JSON.stringify(json_reservation_list[i].machine)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW MACHINE</button></td>`;
+        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='edit-data-${json_reservation_list[i].id}' class='bg-green-600 px-6 py-4 rounded focus:outline-none hover:border-green-200'>EDIT</button></td>`;
         myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='delete-data-${json_categories[i].id}' class='bg-red-800 px-6 py-4 rounded focus:outline-none hover:border-red-200'>DELETE</button></td>`;
-
         myTable += "</tr>";
     }
     myTable += "</table>";
-    $("#tableCategories").html(myTable);
-    loadTableTriggers(json_categories);
+    $("#tablereservations").html(myTable);
+    loadTableTriggers(json_reservation_list);
 }
 
 function showMachineData(json_machines) {
