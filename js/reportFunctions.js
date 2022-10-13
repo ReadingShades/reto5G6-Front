@@ -82,15 +82,29 @@ function traerReportesFechas() {
     let dateOne = $("#dateOne").val();
     let dateTwo = $("#dateTwo").val();
     //console.log(dateOne, dateTwo);
-    $.ajax({
-        url: `${URL_ENDPOINT_RESERVATION}/report-dates/${dateOne}/${dateTwo}`,
-        type: "GET",
-        datatype: "JSON",
-        success: function (response) {
-            console.log(response);
-            drawDatesBetweenReport(dateOne, dateTwo, response);
-        }
-    });
+    let dateOneArray = dateOne.split('-');
+    let dateTwoArray = dateTwo.split('-');
+    // pruebas para verificar que la fecha 1 sea anterior a la fecha 2
+    let yearTest = Number(dateOneArray[0]) <= Number(dateTwoArray[0]);
+    let monthTest = Number(dateOneArray[1]) <= Number(dateTwoArray[1]);
+    let dayTest = Number(dateOneArray[2]) <= Number(dateTwoArray[2]);
+    // console.log(dateOneArray, dateTwoArray);
+    // console.log(yearTest, monthTest, dayTest);
+    // console.log(yearTest && monthTest && dayTest);
+    if (yearTest && monthTest && dayTest) {
+        $.ajax({
+            url: `${URL_ENDPOINT_RESERVATION}/report-dates/${dateOne}/${dateTwo}`,
+            type: "GET",
+            datatype: "JSON",
+            success: function (response) {
+                console.log(response);
+                drawDatesBetweenReport(dateOne, dateTwo, response);
+            }
+        });
+    } else {
+        console.log('test')
+        alert("Verifique que la fecha Desde sea menor o igual a la Hasta.");
+    }
 }
 
 // Crea un formulario para recolectar la informacion del periodo de estudio
