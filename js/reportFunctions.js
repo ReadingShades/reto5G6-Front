@@ -9,7 +9,7 @@ function traerReporteStatus() {
         type: "GET",
         datatype: "JSON",
         success: function (response) {
-            console.log(response)
+            //console.log(response);
             drawStatusReport(response);
         }
     });
@@ -44,7 +44,7 @@ function traerReportesClientes() {
         type: "GET",
         datatype: "JSON",
         success: function (response) {
-            console.log(response)
+            //console.log(response);
             drawClientReport(response);
         }
     });
@@ -58,18 +58,18 @@ function drawClientReport(json_reservation_clients) {
     myTable += "<th scope='col' colspan='4' class='text-sm font-medium text-gray-900 px-6 py-4 text-center bg-blue-100'>Reporte de clientes</th>";
     myTable += "</tr>    ";
     myTable += "<tr>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>id</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>idClient</th>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>numero total de reservaciones</th>";
-    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>nombre</th>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>email</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>nombre</th>";
     myTable += "</tr>    ";
     myTable += "</thead>";
     for (let i = 0, limit = json_reservation_clients.length; i < limit; i++) {
         myTable += "<tr>";
-        myTable += `<td class='border-black text-center'> ${json_reservation_clients[i].client.id}</td>`;
+        myTable += `<td class='border-black text-center'> ${json_reservation_clients[i].client.idClient}</td>`;
         myTable += `<td class='border-black text-center'> ${json_reservation_clients[i].total}</td>`;
-        myTable += `<td class='border-black text-center'> ${json_reservation_clients[i].client.name}</td>`;
         myTable += `<td class='border-black text-center'> ${json_reservation_clients[i].client.email}</td>`;
+        myTable += `<td class='border-black text-center'> ${json_reservation_clients[i].client.name}</td>`;
         myTable += "</tr>";
     }
 
@@ -77,22 +77,98 @@ function drawClientReport(json_reservation_clients) {
     $("#resultado1").html(myTable);
 }
 
+// ajax para recolectar la informacion del reporte de reservaciones existentes entre 2 fechas
 function traerReportesFechas() {
+    let dateOne = $("#dateOne").val();
+    let dateTwo = $("#dateTwo").val();
+    //console.log(dateOne, dateTwo);
     $.ajax({
-        url: `${URL_ENDPOINT_RESERVATION}/report-dates/{dateOne}/{dateTwo}`,
+        url: `${URL_ENDPOINT_RESERVATION}/report-dates/${dateOne}/${dateTwo}`,
         type: "GET",
         datatype: "JSON",
         success: function (response) {
-            console.log(response)
-            //pintarCategoria(response);
+            console.log(response);
+            drawDatesBetweenReport(dateOne, dateTwo, response);
         }
     });
+}
+
+// Crea un formulario para recolectar la informacion del periodo de estudio
+// para el reporte de reservaciones entre 2 fechas
+function drawDatesBetweenForm() {
+    let myForm = "<section class='container flex items-center justify-center'>"
+    myForm += "<Form>";
+    myForm += "<div>";
+    myForm += "<label name='dateOne'>Desde: </label>";
+    myForm += "<input id='dateOne' name='dateOne' type='date' value='2020-01-01'>";
+    myForm += "</div>";
+    myForm += "<div>";
+    myForm += "<label name='dateTwo'>Hasta: </label>";
+    myForm += "<input id='dateTwo' name='dateTwo' type='date' value='2020-12-31'>";
+    myForm += "</div>";
+    myForm += "<br/>";
+    myForm += "<button id='report-between-dates' type='button' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'> Reporte Fechas Reservaciónes</button>";
+    myForm += "<br />";
+    myForm += "</Form>";
+    myForm += "</section>"
+    myForm += "<section>"
+    myForm += "<div id='resultado2'></div>";
+    myForm += "</section>"
+    $("#resultado1").html(myForm);
+    $('#report-between-dates').on('click', traerReportesFechas);
+}
+
+// Dibuja el reporte de cliente de reservaciones a partir de la respuesta ajax
+function drawDatesBetweenReport(dateOne, dateTwo, json_reservation_list) {
+    let myTable = "<table class = 'table-auto min-w-full bg-blue-400'>";
+    myTable += "<thead class = 'bg-blue-300 border-b'>";
+    myTable += "<tr>";
+    myTable += `<th scope='col' colspan='11' class='text-sm font-medium text-gray-900 px-6 py-4 text-center bg-blue-100'>Reporte de reservaciones entre fechas (${dateOne} /// ${dateTwo})</th>`;
+    myTable += "</tr>    ";
+    myTable += "<tr>";
+    myTable += `<th scope='col' colspan='5' class='text-sm font-medium text-gray-900 px-6 py-4 text-center bg-blue-400'>Datos reservacion</th>`;
+    myTable += `<th scope='col' colspan='3' class='text-sm font-medium px-6 py-4 text-center bg-blue-600 text-white'>Datos cliente</th>`;
+    myTable += `<th scope='col' colspan='3' class='text-sm font-medium px-6 py-4 text-center bg-blue-500 text-white'>Datos maquina</th>`;
+    myTable += "</tr>    ";
+    myTable += "<tr>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>idReservation</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>startDate</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>devolutionDate</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>status</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>score</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-white bg-gray-700 px-6 py-4 text-center'>idClient</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-white bg-gray-700 px-6 py-4 text-center'>email</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-white bg-gray-700 px-6 py-4 text-center'>nombre</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-white bg-gray-700 px-6 py-4 text-center'>idMaquina</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-white bg-gray-700 px-6 py-4 text-center'>marca</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-white bg-gray-700 px-6 py-4 text-center'>nombre</th>";
+    myTable += "</tr>    ";
+    myTable += "</thead>";
+    for (let i = 0, limit = json_reservation_list.length; i < limit; i++) {
+        myTable += "<tr>";
+        myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].idReservation}</td>`;
+        myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].startDate}</td>`;
+        myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].devolutionDate}</td>`;
+        myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].status}</td>`;
+        myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].score}</td>`;
+        myTable += `<td class='border-black border-solid border-2 bg-blue-600 text-white text-center'> ${json_reservation_list[i].client.idClient}</td>`;
+        myTable += `<td class='border-black border-solid border-2 bg-blue-600 text-white text-center'> ${json_reservation_list[i].client.email}</td>`;
+        myTable += `<td class='border-black border-solid border-2 bg-blue-600 text-white text-center'> ${json_reservation_list[i].client.name}</td>`;
+        myTable += `<td class='border-black border-solid border-2 bg-blue-500 text-white text-center'> ${json_reservation_list[i].machine.id}</td>`;
+        myTable += `<td class='border-black border-solid border-2 bg-blue-500 text-white text-center'> ${json_reservation_list[i].machine.brand}</td>`;
+        myTable += `<td class='border-black border-solid border-2 bg-blue-500 text-white text-center'> ${json_reservation_list[i].machine.name}</td>`;
+        myTable += "</tr>";
+    }
+
+    myTable += "</table>";
+    $("#resultado2").html(myTable);
 }
 
 
 function loadClickEventHandlers() {
     $("#report-status").on('click', traerReporteStatus);
     $("#report-clients").on('click', traerReportesClientes);
+    $("#report-dates").on('click', drawDatesBetweenForm);
 }
 
 // Asegura que la pagina este completamente cargada antes de aniadir eventos a los botones
