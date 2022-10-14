@@ -10,7 +10,7 @@ const CATEGORY_PROPERTIES_IDENTIFIERS = [NAME_ENTRY, DESCRIPTION_ENTRY];
 const SUBMIT_BUTTON = $('#submit-button-create');
 
 // Preparation on load page
-$(document).ready(function () {
+$(function () {
     window.onload = loadAndDrawCategoryTable();
     SUBMIT_BUTTON.on('click', async function () {
         let selectorData = getDataFields();
@@ -135,14 +135,15 @@ function drawCategoryTable(json_categories) {
     myTable += "</tr>    ";
     myTable += "</thead>";
     for (let i = 0; i < json_categories.length; i++) {
+        let idCategory = json_categories[i].id;
         myTable += "<tr class='border-b bg-gray-800 border-gray-900'>";
-        myTable += `<td id='category-id-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap'>${json_categories[i].id}</td>`;
-        myTable += `<td id='category-name-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].name}</td>`;
-        myTable += `<td id='category-description-elem-${json_categories[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].description}</td>`;
+        myTable += `<td id='category-id-elem-${idCategory}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap'>${idCategory}</td>`;
+        myTable += `<td id='category-name-elem-${idCategory}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].name}</td>`;
+        myTable += `<td id='category-description-elem-${idCategory}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_categories[i].description}</td>`;
         myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center'>${json_categories[i].machines.length}</td>`;
-        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='show-data-${json_categories[i].id}' data-machines='${JSON.stringify(json_categories[i].machines)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW</button></td>`;
-        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='edit-data-${json_categories[i].id}' class='bg-green-600 px-6 py-4 rounded focus:outline-none hover:border-green-200'>EDIT</button></td>`;
-        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='delete-data-${json_categories[i].id}' class='bg-red-800 px-6 py-4 rounded focus:outline-none hover:border-red-200'>DELETE</button></td>`;
+        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='show-data-${idCategory}' data-machines='${JSON.stringify(json_categories[i].machines)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW</button></td>`;
+        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='edit-data-${idCategory}' class='bg-green-600 px-6 py-4 rounded focus:outline-none hover:border-green-200'>EDIT</button></td>`;
+        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='delete-data-${idCategory}' class='bg-red-800 px-6 py-4 rounded focus:outline-none hover:border-red-200'>DELETE</button></td>`;
 
         myTable += "</tr>";
     }
@@ -175,12 +176,13 @@ function showMachineData(categoryName, json_machines) {
     myTable += "</tr>    ";
     myTable += "</thead>";
     for (let i = 0; i < json_machines.length; i++) {
+        let idMachine = json_machines[i].id;
         myTable += "<tr class='border-b bg-gray-800 border-gray-900'>";
-        myTable += `<td id='category-id-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center'>${json_machines[i].id}</td>`;
-        myTable += `<td id='category-name-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].name}</td>`;
-        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].brand}</td>`;
-        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].year}</td>`;
-        myTable += `<td id='category-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].description}</td>`;
+        myTable += `<td id='category-id-elem-${idMachine}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center'>${idMachine}</td>`;
+        myTable += `<td id='category-name-elem-${idMachine}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].name}</td>`;
+        myTable += `<td id='category-description-elem-${idMachine}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].brand}</td>`;
+        myTable += `<td id='category-description-elem-${idMachine}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].year}</td>`;
+        myTable += `<td id='category-description-elem-${idMachine}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].description}</td>`;
         myTable += "</tr>";
     }
     myTable += "</table>";
@@ -190,16 +192,17 @@ function showMachineData(categoryName, json_machines) {
 
 function loadTableTriggers(json_categories) {
     for (let i = 0; i < json_categories.length; i++) {
-        $(`#show-data-${json_categories[i].id}`).on('click', function () {
-            let json_machines = $(`#show-data-${json_categories[i].id}`).attr('data-machines');
+        let idCategory = json_categories[i].id;
+        $(`#show-data-${idCategory}`).on('click', function () {
+            let json_machines = $(`#show-data-${idCategory}`).attr('data-machines');
             showMachineData(json_categories[i].name, json_machines);
         });
-        $(`#edit-data-${json_categories[i].id}`).on('click', function () {
-            let selectorData = getDataFields(json_categories[i].id);
-            if (checkEditDataFields(selectorData)) putCategory(json_categories[i].id);
+        $(`#edit-data-${idCategory}`).on('click', function () {
+            let selectorData = getDataFields(idCategory);
+            if (checkEditDataFields(selectorData)) putCategory(idCategory);
         });
-        $(`#delete-data-${json_categories[i].id}`).one('click', function () {
-            deleteCategoryOne(json_categories[i].id);
+        $(`#delete-data-${idCategory}`).one('click', function () {
+            deleteCategoryOne(idCategory);
         });
     }
 }
@@ -212,8 +215,8 @@ function getDataFields(id = null) {
         });
     } else {
         return ({
-            "name": NAME_ENTRY.val(),
-            "description": DESCRIPTION_ENTRY.val(),
+            "name": CATEGORY_PROPERTIES_IDENTIFIERS[0].val(),
+            "description": CATEGORY_PROPERTIES_IDENTIFIERS[1].val(),
         });
     }
 }

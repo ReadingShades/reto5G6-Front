@@ -4,17 +4,145 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <title>Rent-A-Car - Reservaciones</title>
   </head>
   <body>
-    <h1>Reservaciones</h1>
-    <ul>
-      <li><a href="./category.html">Categoria</a></li>
-      <li><a href="./client.html">Cliente</a></li>
-      <li><a href="./machine.html">Maquina</a></li>
-      <li><a href="./message.html">Mensajes</a></li>
-      <li><a href="./reports.html">Reportes</a></li>
-      <li><a href="../index.html">Index</a></li>
-    </ul>
+    <!-- Title -->
+    <section>
+      <br />
+      <h1
+        class="title-font font-medium text-3xl text-gray-900 justify-center flex"
+      >
+        Reservaciones
+      </h1>
+      <br />
+    </section>
+    <!-- Content -->
+    <section>
+      <div class="frame-root shadow border-2 border-black flex items-center">
+        <div class="frame-content lg:w-0.8/3 md:w-0.8/3">
+          <div
+            class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
+          >
+            <div
+              class="lg:w80 md:w80 center bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
+            >
+              <div>
+                <h1
+                  class="title-font font-medium text-3xl text-gray-900 justify-center flex"
+                >
+                  Reserva
+                </h1>
+                <br />
+                <p
+                  class="title-font font-light text-sm text-gray-900 justify-center flex"
+                >
+                  Crear nueva reserva
+                </p>
+              </div>
+              <div class="relative mb-4">
+                <label
+                  for="category-name"
+                  class="leading-7 text-sm text-gray-600"
+                  >Nombre</label
+                ><input
+                  type="text"
+                  id="category-name"
+                  name="category-name"
+                  minlength="1"
+                  maxlength="45"
+                  class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                />
+              </div>
+              <div class="relative mb-4">
+                <label
+                  for="category-description"
+                  class="leading-7 text-sm text-gray-600"
+                  >Descripcion</label
+                ><input
+                  type="text"
+                  id="category-description"
+                  name="category-description"
+                  minlength="1"
+                  maxlength="250"
+                  class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                />
+              </div>
+              <button
+                id="submit-button-create"
+                class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+              >
+                Crear
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="frame-content lg:w-1.8/3 md:w-1.8/3">
+          <div class="flex container justify-center items-center space-x-4">
+            <div id="tablereservations"></div>
+          </div>
+        </div>
+      </div>
+      <div id="tableMachines">
+        <div id="machineTableData"></div>
+      </div>
+    </section>
+    <!-- Footer/Navbar -->
+    <section class="fixed bottom-0 left-0">
+      <footer
+        class="flex p-4 bg-white rounded-lg shadow md:items-center md:justify-between md:p-6 dark:bg-gray-800"
+      >
+        <ul class="flex">
+          <li class="flex-1 mr-2">
+            <a
+              href="./category.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Categoria</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./client.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Cliente</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./machine.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Maquina</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./message.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Mensajes</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="./reports.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Reportes</a
+            >
+          </li>
+          <li class="flex-1 mr-2">
+            <a
+              href="../index.html"
+              class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+              >Index</a
+            >
+          </li>
+        </ul>
+      </footer>
+    </section>
+
+    <!-- Scripts -->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="module" src="../js/reservationFunctions.js"></script>
   </body>
 </html>

@@ -3,15 +3,18 @@ import { URL_BASE } from './config.js';
 import * as ajaxFunctions from './baseAjax.js';
 
 export const URL_ENDPOINT_RESERVATION = `${URL_BASE}/api/Reservation`;
-const NAME_ENTRY = $('#reservation-name');
-const DESCRIPTION_ENTRY = $('#reservation-description');
-//const CATEGORY_PROPERTIES_IDENTIFIERS = ['#reservation-name', '#reservation-description'];
-const CATEGORY_PROPERTIES_IDENTIFIERS = [NAME_ENTRY, DESCRIPTION_ENTRY];
+const STARTDATE_ENTRY = $('#reservation-startdate-entry');
+const DEVOLUTIONDATE_ENTRY = $('#reservation-devolutiondate-entry');
+const STATUS_ENTRY = $('#reservation-status-entry');
+const SCORE_ENTRY = $('#reservation-SCORE-entry');
+const RESERVATION_PROPERTIES_IDENTIFIERS = [STATUS_ENTRY, DEVOLUTIONDATE_ENTRY, STATUS_ENTRY, SCORE_ENTRY];
 const SUBMIT_BUTTON = $('#submit-button-create');
 
 // Preparation on load page
-$(document).ready(function () {
+$(function () {
     window.onload = loadAndDrawReservationTable();
+    let json_reservation_list = getReservationAll();
+    drawReservationTable(json_reservation_list);
     SUBMIT_BUTTON.on('click', async function () {
         let selectorData = getDataFields();
         if (checkEditDataFields(selectorData)) {
@@ -43,14 +46,6 @@ export async function getReservationOne(reservationID) {
         });
 }
 // POST
-/**
- * 
- * @param {Object} data - a JSON object containing the data to be sent to the server to create a new reservation
- * @param {string} data.id - the ID of the new reservation, null for new categories
- * @param {string} data.name - the name of the new reservation
- * @param {string} data.description - the description of the new reservation
- * @returns {object} - a JSON/AJAX response object containing the operation results
- */
 async function postReservation(data) {
     //console.log(data);    
     let ajaxResponse = await ajaxFunctions.postObject(URL_ENDPOINT_RESERVATION, data)
@@ -66,12 +61,16 @@ async function postReservation(data) {
 }
 // PUT
 async function putReservation(reservationID) {
-    let name = $(`#reservation-name-elem-${reservationID}`).html();
-    let description = $(`#reservation-description-elem-${reservationID}`).html();
+    let startDate = $(`#reservation-startdate-elem-${reservationID}`).val();
+    let devolutionDate = $(`#reservation-devolutiondate-elem-${reservationID}`).val();
+    let status = $(`#reservation-status-elem-${reservationID}`).val();
+    let score = $(`#reservation-score-elem-${reservationID}`).val();
     const data = {
-        "id": Number(reservationID),
-        "name": name,
-        "description": description,
+        "idReservation": Number(reservationID),
+        "startDate": startDate,
+        "devolutionDate": devolutionDate,
+        "status": status,
+        "score": Number(score),
     }
     let response = await ajaxFunctions.putObject(URL_ENDPOINT_RESERVATION, data)
         .then(response => {
@@ -115,22 +114,17 @@ function cleanFormEntries(...args) {
 }
 
 async function loadAndDrawReservationTable() {
-    let json_categories = await getReservationAll();
-    //console.log(json_categories);
-    drawReservationTable(json_categories);
+    let json_reservation_list = await getReservationAll();
+    //console.log(json_reservation_list);
+    drawReservationTable(json_reservation_list);
 }
 
 function drawReservationTable(json_reservation_list) {
     let myTable = "<table class = 'table-auto min-w-full bg-blue-400'>";
     myTable += "<thead class = 'bg-blue-300 border-b'>";
     myTable += "<tr>";
-    myTable += "<th scope='col' colspan='11' class='text-sm font-medium text-gray-900 px-6 py-4 text-center bg-blue-100'>Reservaciones</th>";
-    myTable += "</tr>    ";
-    myTable += "<tr>";
-    myTable += `<th scope='col' colspan='5' class='text-sm font-medium text-gray-900 px-6 py-4 text-center bg-blue-400'>Datos reservacion</th>`;
-    myTable += `<th scope='col' colspan='3' class='text-sm font-medium px-6 py-4 text-center bg-blue-600 text-white'>Datos cliente</th>`;
-    myTable += `<th scope='col' colspan='3' class='text-sm font-medium px-6 py-4 text-center bg-blue-500 text-white'>Datos maquina</th>`;
-    myTable += "</tr>    ";
+    myTable += "<th scope='col' colspan='9' class='text-sm font-medium text-gray-900 px-6 py-4 text-center bg-blue-100'>Reservaciones</th>";
+    myTable += "</tr>";
     myTable += "<tr>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>idReservation</th>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>startDate</th>";
@@ -144,16 +138,48 @@ function drawReservationTable(json_reservation_list) {
     myTable += "</tr>    ";
     myTable += "</thead>";
     for (let i = 0, limit = json_reservation_list.length; i < limit; i++) {
+        let idReservation = json_reservation_list[i].idReservation
         myTable += "<tr>";
-        myTable += `<td id='reservation-id-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].idReservation}</td>`;
-        myTable += `<td id='reservation-startdate-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center contenteditable='true''> ${json_reservation_list[i].startDate}</td>`;
-        myTable += `<td id='reservation-devolutiondate-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center contenteditable='true''> ${json_reservation_list[i].devolutionDate}</td>`;
-        myTable += `<td id='reservation-status-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center contenteditable='true''> ${json_reservation_list[i].status}</td>`;
-        myTable += `<td id='reservation-score-elem-${json_reservation_list[i].idReservation}' class='border-black border-solid border-2 text-center contenteditable='true''> ${json_reservation_list[i].score}</td>`;
-        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='show-data-client-${json_reservation_list[i].id}' data-machines='${JSON.stringify(json_reservation_list[i].client)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW CLIENT</button></td>`;
-        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='show-data-machine-${json_reservation_list[i].id}' data-machines='${JSON.stringify(json_reservation_list[i].machine)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW MACHINE</button></td>`;
-        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='edit-data-${json_reservation_list[i].id}' class='bg-green-600 px-6 py-4 rounded focus:outline-none hover:border-green-200'>EDIT</button></td>`;
-        myTable += `<td class='text-sm text-white font-light whitespace-nowrap'><button id='delete-data-${json_categories[i].id}' class='bg-red-800 px-6 py-4 rounded focus:outline-none hover:border-red-200'>DELETE</button></td>`;
+        myTable += `<td id='reservation-id-elem-${idReservation}' class='border-black border-solid border-2 text-center'> ${idReservation}</td>`;
+        let currentStartDate = String(json_reservation_list[i].startDate).slice(0, 10);
+        myTable += `<td class='border-black border-solid border-2 text-center' contenteditable='true'><input id='reservation-startdate-elem-${idReservation}' type='date' value=${currentStartDate}></td>`;
+        let currentDevolutionDate = String(json_reservation_list[i].devolutionDate).slice(0, 10);
+        myTable += `<td class='border-black border-solid border-2 text-center' contenteditable='true'><input id='reservation-devolutiondate-elem-${idReservation}' type='date' value=${currentDevolutionDate}></td>`;
+        let currentStatus = json_reservation_list[i].status;
+        myTable += "<td class='border-black border-solid border-2 text-center' contenteditable='true'>";
+        myTable += `<select name="currentStatus" id='reservation-status-elem-${idReservation}'>`;
+        let selectedStatusOption = [];
+        selectedStatusOption.push(currentStatus == "created" ? "selected" : "");
+        selectedStatusOption.push(currentStatus == "cancelled" ? "selected" : "");
+        selectedStatusOption.push(currentStatus == "completed" ? "selected" : "");
+        myTable += `<option ${selectedStatusOption[0]} value='created'>Created</option>`;
+        myTable += `<option ${selectedStatusOption[1]} value='cancelled'>Cancelled</option>`;
+        myTable += `<option ${selectedStatusOption[2]} value='completed'>Completed</option>`;
+        myTable += "</select >";
+        myTable += "</td >";
+        let currentScore = json_reservation_list[i].score;
+        //console.log(currentScore, typeof currentScore);
+        myTable += `<td td class='border-black border-solid border-2 text-center' contenteditable = 'true' >`
+        myTable += `<select name="currentScore" id='reservation-score-elem-${idReservation}'>`;
+        let selectedScoreOption = [];
+        selectedScoreOption.push(currentScore == "null" || 0 ? "selected" : "");
+        selectedScoreOption.push(currentScore == 1 ? "selected" : "");
+        selectedScoreOption.push(currentScore == 2 ? "selected" : "");
+        selectedScoreOption.push(currentScore == 3 ? "selected" : "");
+        selectedScoreOption.push(currentScore == 4 ? "selected" : "");
+        selectedScoreOption.push(currentScore == 5 ? "selected" : "");
+        myTable += `<option ${selectedScoreOption[0]} value=0>0</option>`;
+        myTable += `<option ${selectedScoreOption[1]} value=1>1</option>`;
+        myTable += `<option ${selectedScoreOption[2]} value=2>2</option>`;
+        myTable += `<option ${selectedScoreOption[3]} value=3>3</option>`;
+        myTable += `<option ${selectedScoreOption[4]} value=4>4</option>`;
+        myTable += `<option ${selectedScoreOption[5]} value=5>5</option>`;
+        myTable += "</select >";
+        myTable += "</td >";
+        myTable += `<td td class='text-sm text-white font-light whitespace-nowrap' > <button id='show-data-client-${idReservation}' data-client='${JSON.stringify(json_reservation_list[i].client)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW CLIENT</button></td> `;
+        myTable += `<td td class='text-sm text-white font-light whitespace-nowrap' > <button id='show-data-machine-${idReservation}' data-machine='${JSON.stringify(json_reservation_list[i].machine)}' class='bg-blue-600 px-6 py-4 rounded focus:outline-none hover:border-blue-200'>SHOW MACHINE</button></td> `;
+        myTable += `<td td class='text-sm text-white font-light whitespace-nowrap' > <button id='edit-data-${idReservation}' class='bg-green-600 px-6 py-4 rounded focus:outline-none hover:border-green-200'>EDIT</button></td> `;
+        myTable += `<td td class='text-sm text-white font-light whitespace-nowrap' > <button id='delete-data-${idReservation}' class='bg-red-800 px-6 py-4 rounded focus:outline-none hover:border-red-200'>DELETE</button></td> `;
         myTable += "</tr>";
     }
     myTable += "</table>";
@@ -161,7 +187,7 @@ function drawReservationTable(json_reservation_list) {
     loadTableTriggers(json_reservation_list);
 }
 
-function showMachineData(json_machines) {
+function showMachineData(idReserva, json_machine) {
     // target table div
     let machineTable = $("#tableMachines");
     machineTable.html('');
@@ -170,9 +196,11 @@ function showMachineData(json_machines) {
     if (machineTableData.length) {
         machineTableData.remove();
     }
-    // convert json_machines string data to JSON
-    json_machines = JSON.parse(json_machines);
-    let myTable = "<table id='machineTableData' class = 'table-auto min-w-full bg-purple-100'>";
+    // convert json_machine string data to JSON
+    //console.log(json_machine);
+    json_machine = JSON.parse(json_machine);
+    let myTable = `< br /><h1 class='title-font font-medium text-3xl text-gray-900 justify-center text-center'> Maquina para la reserva #${idReserva} </h1><br/>`;
+    myTable += "<table id='machineTableData' class = 'table-auto min-w-full bg-purple-100'>";
     myTable += "<thead class = 'bg-white border-b'>";
     myTable += "<tr>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>id</th>";
@@ -182,31 +210,36 @@ function showMachineData(json_machines) {
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>description</th>";
     myTable += "</tr>    ";
     myTable += "</thead>";
-    for (let i = 0; i < json_machines.length; i++) {
-        myTable += "<tr class='border-b bg-gray-800 boder-gray-900'>";
-        myTable += `<td id='reservation-id-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center'>${json_machines[i].id}</td>`;
-        myTable += `<td id='reservation-name-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].name}</td>`;
-        myTable += `<td id='reservation-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].brand}</td>`;
-        myTable += `<td id='reservation-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].year}</td>`;
-        myTable += `<td id='reservation-description-elem-${json_machines[i].id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' >${json_machines[i].description}</td>`;
-        myTable += "</tr>";
-    }
+    myTable += "<tr class='border-b bg-gray-800 boder-gray-900'>";
+    myTable += `< td id = 'reservation-id-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.id}</ > `;
+    myTable += `< td id = 'reservation-name-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.name}</ > `;
+    myTable += `< td id = 'reservation-description-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.brand}</ > `;
+    myTable += `< td id = 'reservation-description-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.year}</ > `;
+    myTable += `< td id = 'reservation-description-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.description}</ > `;
+    myTable += "</tr>";
     myTable += "</table>";
     machineTable.html(myTable);
 };
 
-function loadTableTriggers(json_categories) {
-    for (let i = 0; i < json_categories.length; i++) {
-        $(`#show-data-${json_categories[i].id}`).on('click', function () {
-            let json_machines = $(`#show-data-${json_categories[i].id}`).attr('data-machines');
+function loadTableTriggers(json_reservation_list) {
+    for (let i = 0; i < json_reservation_list.length; i++) {
+        let idReserva = json_reservation_list[i].idReservation;
+        $(`#show-data-machine-${idReserva}`).on('click', function () {
+            let json_machines = $(`#show-data-machine-${idReserva}`).attr('data-machine');
+            //console.log(json_machines);
+            showMachineData(idReserva, json_machines);
+        });
+        $(`#show-data-client-${idReserva}`).on('click', function () {
+            let json_machines = $(`#show-data-client-${idReserva}`).attr('data-client');
             showMachineData(json_machines);
         });
-        $(`#edit-data-${json_categories[i].id}`).on('click', function () {
-            let selectorData = getDataFields(json_categories[i].id);
-            if (checkEditDataFields(selectorData)) putReservation(json_categories[i].id);
+        $(`#edit-data-${idReserva}`).on('click', function () {
+            let selectorData = getDataFields(idReserva);
+            console.log(selectorData);
+            if (checkEditDataFields(selectorData)) putReservation(idReserva);
         });
-        $(`#delete-data-${json_categories[i].id}`).one('click', function () {
-            deleteReservationOne(json_categories[i].id);
+        $(`#delete-data-${idReserva}`).one('click', function () {
+            deleteReservationOne(idReserva);
         });
     }
 }
@@ -214,41 +247,44 @@ function loadTableTriggers(json_categories) {
 function getDataFields(id = null) {
     if (id) {
         return ({
-            "name": $(`#reservation-name-elem-${id}`).text(),
-            "description": $(`#reservation-description-elem-${id}`).text(),
+            "startDate": $(`#reservation-startdate-elem-${id}`).val(),
+            "devolutionDate": $(`#reservation-devolutiondate-elem-${id}`).val(),
+            "status": $(`#reservation-status-elem-${id}`).val(),
+            "score": $(`#reservation-score-elem-${id}`).val(),
         });
     } else {
         return ({
-            "name": NAME_ENTRY.val(),
-            "description": DESCRIPTION_ENTRY.val(),
+            "startDate": STARTDATE_ENTRY.val(),
+            "devolutionDate": DEVOLUTIONDATE_ENTRY.val(),
+            "status": STATUS_ENTRY.val(),
+            "score": SCORE_ENTRY.val(),
         });
     }
 }
 
 function checkEditDataFields(selectorData) {
-    // pruebas de campo nombre
-    let editNameText = selectorData.name;
-    let isNameFieldNotEmptyTest = editNameText.length > 0;
-    let isNameFieldLessThan46CharLenTest = editNameText.length < 46;
-    let nameFieldTestBattery = isNameFieldNotEmptyTest && isNameFieldLessThan46CharLenTest;
+    // date format tests
+    let startDateValue = selectorData.startDate;
+    let devolutionDateValue = selectorData.devolutionDate;
 
-    // pruebas de campo descripcion
-    let editDescriptionText = selectorData.description;
-    let isDescriptionFieldNotEmptyTest = editDescriptionText.length > 0;
-    let isDescriptionFieldLessThan251CharLenTest = editDescriptionText.length < 251;
-    let descriptionFieldTestBattery = isDescriptionFieldNotEmptyTest && isDescriptionFieldLessThan251CharLenTest;
+    let startDateLengthTest = startDateValue.length == 10;
+    let devolutionDateLengthTest = devolutionDateValue.length == 10;
+    let dateTestBattery = startDateLengthTest && devolutionDateLengthTest;
+    // status tests
+    let statusValue = selectorData.status;
+    let statusMinLenght = statusValue.length > 0;
+    let statusMaxLenght = statusValue.length < 10;
+    let statusTestBattery = statusMinLenght && statusMaxLenght;
 
-    if (!nameFieldTestBattery || !descriptionFieldTestBattery) {
+    // score tests
+    let scoreValue = selectorData.score;
+    let scoreNullValueTest = (scoreValue == null) || (scoreValue >= 0);
+    let scoreBoundaryTest = scoreValue < 6;
+    let scoreTestBattery = scoreNullValueTest && scoreBoundaryTest;
+
+    if (!dateTestBattery || !statusTestBattery || !scoreTestBattery) {
         let errorMsg = '';
         errorMsg += 'Error en entrada de datos \n';
-        if (!nameFieldTestBattery) {
-            errorMsg += 'El campo nombre esta mal formado (min = 0, max = 45) \n';
-            errorMsg += `Campo: nombre = ${editNameText}, longitud = ${editNameText.length} \n`;
-        }
-        if (!descriptionFieldTestBattery) {
-            errorMsg += 'El campo descripcion esta mal formado (min = 0, max = 250) \n';
-            errorMsg += `Campo: descripcion = ${editDescriptionText}, longitud = ${editDescriptionText.length} \n`;
-        }
         console.error(errorMsg);
         alert(errorMsg);
         return false;
