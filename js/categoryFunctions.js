@@ -6,7 +6,7 @@ export const URL_ENDPOINT_CATEGORY = `${URL_BASE}/api/Category`;
 const NAME_ENTRY = $('#category-name');
 const DESCRIPTION_ENTRY = $('#category-description');
 //const CATEGORY_PROPERTIES_IDENTIFIERS = ['#category-name', '#category-description'];
-const CATEGORY_PROPERTIES_IDENTIFIERS = [NAME_ENTRY, DESCRIPTION_ENTRY];
+const CATEGORY_FORM_ENTRIES = [NAME_ENTRY, DESCRIPTION_ENTRY];
 const SUBMIT_BUTTON = $('#submit-button-create');
 
 // Preparation on load page
@@ -60,7 +60,7 @@ async function postCategory(data) {
         }).catch(e => {
             console.log(e);
         });
-    cleanFormEntries(...CATEGORY_PROPERTIES_IDENTIFIERS);
+    cleanFormEntries(...CATEGORY_FORM_ENTRIES);
     loadAndDrawCategoryTable();
     return ajaxResponse;
 }
@@ -215,8 +215,8 @@ function getDataFields(id = null) {
         });
     } else {
         return ({
-            "name": CATEGORY_PROPERTIES_IDENTIFIERS[0].val(),
-            "description": CATEGORY_PROPERTIES_IDENTIFIERS[1].val(),
+            "name": CATEGORY_FORM_ENTRIES[0].val(),
+            "description": CATEGORY_FORM_ENTRIES[1].val(),
         });
     }
 }

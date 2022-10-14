@@ -6,13 +6,16 @@ export const URL_ENDPOINT_RESERVATION = `${URL_BASE}/api/Reservation`;
 const STARTDATE_ENTRY = $('#reservation-startdate-entry');
 const DEVOLUTIONDATE_ENTRY = $('#reservation-devolutiondate-entry');
 const STATUS_ENTRY = $('#reservation-status-entry');
-const SCORE_ENTRY = $('#reservation-SCORE-entry');
-const RESERVATION_PROPERTIES_IDENTIFIERS = [STATUS_ENTRY, DEVOLUTIONDATE_ENTRY, STATUS_ENTRY, SCORE_ENTRY];
+const SCORE_ENTRY = $('#reservation-score-entry');
+const CLIENT_ENTRY = $('#reservation-client-entry');
+const MACHINE_ENTRY = $('#reservation-machine-entry');
+const RESERVATION_FORM_ENTRIES = [STATUS_ENTRY, DEVOLUTIONDATE_ENTRY, STATUS_ENTRY, SCORE_ENTRY, CLIENT_ENTRY, MACHINE_ENTRY];
 const SUBMIT_BUTTON = $('#submit-button-create');
 
 // Preparation on load page
 $(function () {
     window.onload = loadAndDrawReservationTable();
+    window.onload = drawReservationCreationForm();
     let json_reservation_list = getReservationAll();
     drawReservationTable(json_reservation_list);
     SUBMIT_BUTTON.on('click', async function () {
@@ -55,7 +58,7 @@ async function postReservation(data) {
         }).catch(e => {
             console.log(e);
         });
-    cleanFormEntries(...CATEGORY_PROPERTIES_IDENTIFIERS);
+    cleanFormEntries(...RESERVATION_FORM_ENTRIES);
     loadAndDrawReservationTable();
     return ajaxResponse;
 }
@@ -121,6 +124,9 @@ async function loadAndDrawReservationTable() {
 
 function drawReservationTable(json_reservation_list) {
     let myTable = "<table class = 'table-auto min-w-full bg-blue-400'>";
+    // Table heading
+    // 9 elements: idReservation | startDate | devolutionDate | status | score
+    // SHOW_CLIENT | SHOW_MACHINE | EDIT_BUTTON | DELETE_BUTTON
     myTable += "<thead class = 'bg-blue-300 border-b'>";
     myTable += "<tr>";
     myTable += "<th scope='col' colspan='9' class='text-sm font-medium text-gray-900 px-6 py-4 text-center bg-blue-100'>Reservaciones</th>";
@@ -185,6 +191,26 @@ function drawReservationTable(json_reservation_list) {
     myTable += "</table>";
     $("#tablereservations").html(myTable);
     loadTableTriggers(json_reservation_list);
+}
+
+function drawReservationCreationForm() {
+    let formLocation = $("#reservation-creation-form");
+    let myForm = "<section class='container flex items-center justify-center'>";
+    myForm += "<form>"
+    /** model
+     <div class="relative mb-4">
+     <label for="category-name" class="leading-7 text-sm text-gray-600">
+     Nombre
+     </label>
+     <input type="text" id="category-name" name="category-name" minlength="1" maxlength="45" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
+     </div>           
+     */
+    // submit button. type is set to 'button' to prevent form default reload 
+    // behaviour
+    myForm += "<button id='submit-button-create' type='button' class='text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg' >Crear</button>";
+    myForm += "</form>"
+    myForm += "</section>";
+    formLocation.html(myForm);
 }
 
 function showMachineData(idReserva, json_machine) {
