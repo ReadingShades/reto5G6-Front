@@ -161,9 +161,12 @@ function drawDatesBetweenReport(dateOne, dateTwo, json_reservation_list) {
     for (let i = 0, limit = json_reservation_list.length; i < limit; i++) {
         myTable += "<tr>";
         myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].idReservation}</td>`;
-        myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].startDate}</td>`;
-        myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].devolutionDate}</td>`;
-        myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].status}</td>`;
+        let currentStartDate = String(json_reservation_list[i].startDate).slice(0, 10);
+        myTable += `<td class='border-black border-solid border-2 text-center'> ${currentStartDate}</td>`;
+        let currentDevolutionDate = String(json_reservation_list[i].devolutionDate).slice(0, 10);
+        myTable += `<td class='border-black border-solid border-2 text-center'> ${currentDevolutionDate}</td>`;
+        let currentStatus = String(json_reservation_list[i].status).toUpperCase();
+        myTable += `<td class='border-black border-solid border-2 text-center'> ${currentStatus}</td>`;
         myTable += `<td class='border-black border-solid border-2 text-center'> ${json_reservation_list[i].score}</td>`;
         myTable += `<td class='border-black border-solid border-2 bg-blue-600 text-white text-center'> ${json_reservation_list[i].client.idClient}</td>`;
         myTable += `<td class='border-black border-solid border-2 bg-blue-600 text-white text-center'> ${json_reservation_list[i].client.email}</td>`;
