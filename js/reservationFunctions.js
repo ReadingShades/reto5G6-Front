@@ -1,5 +1,7 @@
 // Endpoint: /api/Reservation/
 import { URL_BASE } from './config.js';
+import { getClientAll, getClientOne } from './clientFunctions.js';
+import { getMachineAll, getMachineOne } from './machineFunctions.js';
 import * as ajaxFunctions from './baseAjax.js';
 
 export const URL_ENDPOINT_RESERVATION = `${URL_BASE}/api/Reservation`;
@@ -15,16 +17,9 @@ const SUBMIT_BUTTON = $('#submit-button-create');
 // Preparation on load page
 $(function () {
     window.onload = loadAndDrawReservationTable();
-    window.onload = drawReservationCreationForm();
+    window.onload = drawReservationCreationFormOptions();
     let json_reservation_list = getReservationAll();
     drawReservationTable(json_reservation_list);
-    SUBMIT_BUTTON.on('click', async function () {
-        let selectorData = getDataFields();
-        if (checkEditDataFields(selectorData)) {
-            let status = await postReservation(selectorData);
-            console.log(status);
-        }
-    });
 });
 
 // GET
@@ -50,7 +45,7 @@ export async function getReservationOne(reservationID) {
 }
 // POST
 async function postReservation(data) {
-    //console.log(data);    
+    //console.log(data);
     let ajaxResponse = await ajaxFunctions.postObject(URL_ENDPOINT_RESERVATION, data)
         .then(response => {
             console.log(response);
@@ -58,7 +53,7 @@ async function postReservation(data) {
         }).catch(e => {
             console.log(e);
         });
-    cleanFormEntries(...RESERVATION_FORM_ENTRIES);
+    //cleanFormEntries(...RESERVATION_FORM_ENTRIES);
     loadAndDrawReservationTable();
     return ajaxResponse;
 }
@@ -193,40 +188,63 @@ function drawReservationTable(json_reservation_list) {
     loadTableTriggers(json_reservation_list);
 }
 
-function drawReservationCreationForm() {
-    let formLocation = $("#reservation-creation-form");
-    let myForm = "<section class='container flex items-center justify-center'>";
-    myForm += "<form>"
-    /** model
-     <div class="relative mb-4">
-     <label for="category-name" class="leading-7 text-sm text-gray-600">
-     Nombre
-     </label>
-     <input type="text" id="category-name" name="category-name" minlength="1" maxlength="45" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
-     </div>           
-     */
-    // submit button. type is set to 'button' to prevent form default reload 
-    // behaviour
-    myForm += "<button id='submit-button-create' type='button' class='text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg' >Crear</button>";
-    myForm += "</form>"
-    myForm += "</section>";
-    formLocation.html(myForm);
+async function drawReservationCreationFormOptions() {
+    // machine selection options
+    let selectionMachineOptionsTarget = $("#reservation-machine-entry");
+    let machineSelectionOptions = "";
+    let machineList = await getMachineAll();
+    if (machineList.length > 0) {
+        for (let i = 0, limit = machineList.length; i < limit; i++) {
+            //console.log(machineList[i]);
+            machineSelectionOptions += `<option class='text-sm' value=${machineList[i].id}>{id: ${machineList[i].id}, name: ${machineList[i].name}}</option>`;
+        }
+    } else {
+        machineSelectionOptions += `<option></option>`;
+    }
+    selectionMachineOptionsTarget.append(machineSelectionOptions);
+
+    // client input options
+    let selectionClientOptionsTarget = $("#reservation-client-entry");
+    let selectionClientOptions = "";
+    let clientList = await getClientAll();
+    //console.log(clientList);    
+    if (clientList.length > 0) {
+        for (let i = 0, limit = clientList.length; i < limit; i++) {
+            //console.log(clientList[i]);
+            selectionClientOptions += `<option class='text-sm' value=${clientList[i].idClient}>{id: ${clientList[i].idClient}, name: ${clientList[i].name}}</option>`;
+        }
+    } else {
+        selectionClientOptions += `<option></option>`;
+    }
+    selectionClientOptionsTarget.append(selectionClientOptions);
+    loadSubmitTrigger();
+}
+
+function loadSubmitTrigger() {
+    SUBMIT_BUTTON.on('click', async function () {
+        let selectorData = getDataFields();
+        console.log(selectorData);
+        if (checkEditDataFields(selectorData)) {
+            let status = await postReservation(selectorData);
+            console.log(status);
+        }
+    });
 }
 
 function showMachineData(idReserva, json_machine) {
     // target table div
-    let machineTable = $("#tableMachines");
+    let machineTable = $("#tablemachine");
     machineTable.html('');
     // Clear machine table
-    let machineTableData = $('#machineTableData');
+    let machineTableData = $('#machinetabledata');
     if (machineTableData.length) {
         machineTableData.remove();
     }
     // convert json_machine string data to JSON
     //console.log(json_machine);
     json_machine = JSON.parse(json_machine);
-    let myTable = `< br /><h1 class='title-font font-medium text-3xl text-gray-900 justify-center text-center'> Maquina para la reserva #${idReserva} </h1><br/>`;
-    myTable += "<table id='machineTableData' class = 'table-auto min-w-full bg-purple-100'>";
+    let myTable = `<br /><h1 class='title-font font-medium text-3xl text-gray-900 justify-center text-center'> Reserva #${idReserva}: Datos maquina </h1><br/>`;
+    myTable += "<table id='machinetabledata' class = 'table-auto min-w-full bg-purple-100'>";
     myTable += "<thead class = 'bg-white border-b'>";
     myTable += "<tr>";
     myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>id</th>";
@@ -237,27 +255,60 @@ function showMachineData(idReserva, json_machine) {
     myTable += "</tr>    ";
     myTable += "</thead>";
     myTable += "<tr class='border-b bg-gray-800 boder-gray-900'>";
-    myTable += `< td id = 'reservation-id-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.id}</ > `;
-    myTable += `< td id = 'reservation-name-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.name}</ > `;
-    myTable += `< td id = 'reservation-description-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.brand}</ > `;
-    myTable += `< td id = 'reservation-description-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.year}</ > `;
-    myTable += `< td id = 'reservation-description-elem-${json_machine.id}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.description}</ > `;
+    myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.id}</ > `;
+    myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.name}</ > `;
+    myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.brand}</ > `;
+    myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.year}</ > `;
+    myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_machine.description}</ > `;
     myTable += "</tr>";
     myTable += "</table>";
     machineTable.html(myTable);
-};
+}
+
+function showClientData(idReserva, json_client) {
+    // target table div
+    let clientTable = $("#tableclient");
+    clientTable.html('');
+    // Clear client table
+    let clientTableData = $('#clienttabledata');
+    if (clientTableData.length) {
+        clientTableData.remove();
+    }
+    // convert json_client string data to JSON
+    console.log(json_client);
+    json_client = JSON.parse(json_client);
+    let myTable = `<br /><h1 class='title-font font-medium text-3xl text-gray-900 justify-center text-center'> Reserva #${idReserva}: Datos cliente </h1><br/>`;
+    myTable += "<table id='clientTableData' class = 'table-auto min-w-full bg-purple-100'>";
+    myTable += "<thead class = 'bg-white border-b'>";
+    myTable += "<tr>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>idClient</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>email</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>name</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>age</th>";
+    myTable += "</tr>    ";
+    myTable += "</thead>";
+    myTable += "<tr class='border-b bg-gray-800 boder-gray-900'>";
+    myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_client.idClient}</ > `;
+    myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_client.email}</ > `;
+    myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_client.name}</ > `;
+    myTable += `<td class='text-sm text-white font-light px-6 py-4 whitespace-nowrap text-center' > ${json_client.age}</ > `;
+    myTable += "</tr>";
+    myTable += "</table>";
+    clientTable.html(myTable);
+}
 
 function loadTableTriggers(json_reservation_list) {
     for (let i = 0; i < json_reservation_list.length; i++) {
         let idReserva = json_reservation_list[i].idReservation;
         $(`#show-data-machine-${idReserva}`).on('click', function () {
-            let json_machines = $(`#show-data-machine-${idReserva}`).attr('data-machine');
-            //console.log(json_machines);
-            showMachineData(idReserva, json_machines);
+            let json_machine = $(`#show-data-machine-${idReserva}`).attr('data-machine');
+            //console.log(json_machine);
+            showMachineData(idReserva, json_machine);
         });
         $(`#show-data-client-${idReserva}`).on('click', function () {
-            let json_machines = $(`#show-data-client-${idReserva}`).attr('data-client');
-            showMachineData(json_machines);
+            let json_client = $(`#show-data-client-${idReserva}`).attr('data-client');
+            //console.log(json_client);
+            showClientData(idReserva, json_client);
         });
         $(`#edit-data-${idReserva}`).on('click', function () {
             let selectorData = getDataFields(idReserva);
@@ -283,19 +334,21 @@ function getDataFields(id = null) {
             "startDate": STARTDATE_ENTRY.val(),
             "devolutionDate": DEVOLUTIONDATE_ENTRY.val(),
             "status": STATUS_ENTRY.val(),
-            "score": SCORE_ENTRY.val(),
+            "score": Number(SCORE_ENTRY.val()),
+            "client": { "idClient": Number(CLIENT_ENTRY.val()) },
+            "machine": { "id": Number(MACHINE_ENTRY.val()) },
         });
     }
 }
 
 function checkEditDataFields(selectorData) {
     // date format tests
-    let startDateValue = selectorData.startDate;
-    let devolutionDateValue = selectorData.devolutionDate;
+    // let startDateValue = selectorData.startDate;
+    // let devolutionDateValue = selectorData.devolutionDate;
 
-    let startDateLengthTest = startDateValue.length == 10;
-    let devolutionDateLengthTest = devolutionDateValue.length == 10;
-    let dateTestBattery = startDateLengthTest && devolutionDateLengthTest;
+    // let startDateLengthTest = startDateValue.length == 10;
+    // let devolutionDateLengthTest = devolutionDateValue.length == 10;
+    // let dateTestBattery = startDateLengthTest && devolutionDateLengthTest;
     // status tests
     let statusValue = selectorData.status;
     let statusMinLenght = statusValue.length > 0;
@@ -308,7 +361,8 @@ function checkEditDataFields(selectorData) {
     let scoreBoundaryTest = scoreValue < 6;
     let scoreTestBattery = scoreNullValueTest && scoreBoundaryTest;
 
-    if (!dateTestBattery || !statusTestBattery || !scoreTestBattery) {
+    // if (!dateTestBattery || !statusTestBattery || !scoreTestBattery) {
+    if (!statusTestBattery || !scoreTestBattery) {
         let errorMsg = '';
         errorMsg += 'Error en entrada de datos \n';
         console.error(errorMsg);

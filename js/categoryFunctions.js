@@ -44,7 +44,7 @@ export async function getCategoryOne(categoryID) {
 }
 // POST
 /**
- * 
+ *
  * @param {Object} data - a JSON object containing the data to be sent to the server to create a new category
  * @param {string} data.id - the ID of the new category, null for new categories
  * @param {string} data.name - the name of the new category
@@ -52,7 +52,7 @@ export async function getCategoryOne(categoryID) {
  * @returns {object} - a JSON/AJAX response object containing the operation results
  */
 async function postCategory(data) {
-    //console.log(data);    
+    //console.log(data);
     let ajaxResponse = await ajaxFunctions.postObject(URL_ENDPOINT_CATEGORY, data)
         .then(response => {
             console.log(response);

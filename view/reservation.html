@@ -73,7 +73,7 @@
     <!-- Content -->
     <section>
       <div class="frame-root shadow border-2 border-black flex items-center">
-        <div class="frame-content lg:w-0.8/3 md:w-0.8/3">
+        <div class="frame-content lg:w-0.9/3 md:w-0.9/3">
           <div
             class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
           >
@@ -93,7 +93,93 @@
                   Crear nueva reserva
                 </p>
               </div>
-              <div id="reservation-creation-form"></div>
+              <section class="container flex items-center justify-center">
+                <form>
+                  <!-- input startDate -->
+                  <div class="relative mb-4">
+                    <label
+                      for="reservation-startdate-entry"
+                      class="leading-7 text-sm text-gray-600"
+                    >
+                      Fecha inicio:
+                    </label>
+                    <input
+                      name="reservation-startdate-entry"
+                      id="reservation-startdate-entry"
+                      type="date"
+                      value="2022-10-16"
+                    />
+                  </div>
+
+                  <!-- input devolutionDate -->
+                  <div class="relative mb-4">
+                    <label
+                      for="reservation-devolutiondate-entry"
+                      class="leading-7 text-sm text-gray-600"
+                    >
+                      Fecha devolucion:
+                    </label>
+                    <input
+                      name="reservation-devolutiondate-entry"
+                      id="reservation-devolutiondate-entry"
+                      type="date"
+                      value="2022-10-20"
+                    />
+                  </div>
+
+                  <!-- input for machine selection -->
+                  <div class="relative mb-4">
+                    <label
+                      name="reservation-machine-entry"
+                      class="leading-7 text-sm text-gray-600"
+                    >
+                      Maquina:
+                    </label>
+                    <select
+                      name="reservation-machine-entry"
+                      id="reservation-machine-entry"
+                    >
+                      <!-- <div id="reservation-machine-entry-options"></div> -->
+                    </select>
+                  </div>
+
+                  <!-- Input for client selection -->
+                  <div class="relative mb-4">
+                    <label
+                      name="reservation-client-entry"
+                      class="leading-7 text-sm text-gray-600"
+                    >
+                      Cliente:
+                    </label>
+                    <select
+                      name="reservation-client-entry"
+                      id="reservation-client-entry"
+                    ></select>
+                    <input
+                      hidden="true"
+                      type="hidden"
+                      value="Created"
+                      id="reservation-status-entry"
+                    />
+                    <input
+                      hidden="true"
+                      type="hidden"
+                      value="0"
+                      id="reservation-score-entry"
+                    />
+                  </div>
+                </form>
+              </section>
+              <!-- submit button. type is set to 'button' to prevent form default reload behaviour -->
+              <div class="relative mb-4 flex flex-col items-center">
+                <button
+                  id="submit-button-create"
+                  type="button"
+                  class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                >
+                  Crear
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -103,8 +189,11 @@
           </div>
         </div>
       </div>
-      <div id="tableMachines">
-        <div id="machineTableData"></div>
+      <div id="tableclient">
+        <div id="clienttabledata"></div>
+      </div>
+      <div id="tablemachine">
+        <div id="machinetabledata"></div>
       </div>
     </section>
 
