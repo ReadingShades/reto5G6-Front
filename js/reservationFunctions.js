@@ -6,12 +6,19 @@ import * as ajaxFunctions from './baseAjax.js';
 
 export const URL_ENDPOINT_RESERVATION = `${URL_BASE}/api/Reservation`;
 const STARTDATE_ENTRY = $('#reservation-startdate-entry');
-const DEVOLUTIONDATE_ENTRY = $('#reservation-devolutiondate-entry');
+const DEVOLUTION_DATE_ENTRY = $('#reservation-devolutiondate-entry');
 const STATUS_ENTRY = $('#reservation-status-entry');
 const SCORE_ENTRY = $('#reservation-score-entry');
 const CLIENT_ENTRY = $('#reservation-client-entry');
 const MACHINE_ENTRY = $('#reservation-machine-entry');
-const RESERVATION_FORM_ENTRIES = [STATUS_ENTRY, DEVOLUTIONDATE_ENTRY, STATUS_ENTRY, SCORE_ENTRY, CLIENT_ENTRY, MACHINE_ENTRY];
+const RESERVATION_FORM_ENTRIES = {
+    "startDate": STARTDATE_ENTRY,
+    "devolutionDate": DEVOLUTION_DATE_ENTRY,
+    "status": STATUS_ENTRY,
+    "score": SCORE_ENTRY,
+    "client": CLIENT_ENTRY,
+    "machine": MACHINE_ENTRY
+};
 const SUBMIT_BUTTON = $('#submit-button-create');
 
 // Preparation on load page
@@ -331,12 +338,12 @@ function getDataFields(id = null) {
         });
     } else {
         return ({
-            "startDate": STARTDATE_ENTRY.val(),
-            "devolutionDate": DEVOLUTIONDATE_ENTRY.val(),
-            "status": STATUS_ENTRY.val(),
-            "score": Number(SCORE_ENTRY.val()),
-            "client": { "idClient": Number(CLIENT_ENTRY.val()) },
-            "machine": { "id": Number(MACHINE_ENTRY.val()) },
+            "startDate": RESERVATION_FORM_ENTRIES.startDate.val(),
+            "devolutionDate": RESERVATION_FORM_ENTRIES.devolutionDate.val(),
+            "status": RESERVATION_FORM_ENTRIES.status.val(),
+            "score": Number(RESERVATION_FORM_ENTRIES.score.val()),
+            "client": { "idClient": Number(RESERVATION_FORM_ENTRIES.client.val()) },
+            "machine": { "id": Number(RESERVATION_FORM_ENTRIES.machine.val()) },
         });
     }
 }

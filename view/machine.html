@@ -59,6 +59,156 @@
         </ul>
       </nav>
     </section>
-    <h1>Maquina</h1>
+    <!-- Main -->
+    <section class="text-gray-600 body-font relative">
+      <div class="frame-root shadow border-2 border-black flex">
+        <div class="frame-content lg:w-1/3 md:w-1/3">
+          <section class="text-gray-600 body-font">
+            <div
+              class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
+            >
+              <div
+                class="lg:w80 md:w80 center bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
+              >
+                <div>
+                  <h1
+                    class="title-font font-medium text-3xl text-gray-900 justify-center flex"
+                  >
+                    Maquina
+                  </h1>
+                  <br />
+                  <p
+                    class="title-font font-light text-sm text-gray-900 justify-center flex"
+                  >
+                    Crear nueva maquina
+                  </p>
+                </div>
+                <div class="relative mb-4">
+                  <label
+                    for="machine-name-entry"
+                    class="leading-7 text-sm text-gray-600"
+                    >Nombre</label
+                  ><input
+                    type="text"
+                    id="machine-name-entry"
+                    name="machine-name-entry"
+                    minlength="1"
+                    maxlength="45"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  />
+                </div>
+                <div class="relative mb-4">
+                  <label
+                    for="machine-description-entry"
+                    class="leading-7 text-sm text-gray-600"
+                    >Descripcion</label
+                  ><input
+                    type="text"
+                    id="machine-description-entry"
+                    name="machine-description-entry"
+                    minlength="1"
+                    maxlength="250"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  />
+                </div>
+                <div class="relative mb-4">
+                  <label
+                    for="machine-brand-entry"
+                    class="leading-7 text-sm text-gray-600"
+                    >Marca</label
+                  ><input
+                    type="text"
+                    id="machine-brand-entry"
+                    name="machine-brand-entry"
+                    minlength="1"
+                    maxlength="45"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  />
+                </div>
+                <div class="relative mb-4">
+                  <label
+                    for="machine-year-entry"
+                    class="leading-7 text-sm text-gray-600"
+                    >Año</label
+                  ><input
+                    type="number"
+                    id="machine-year-entry"
+                    name="machine-year-entry"
+                    minlength="1"
+                    maxlength="45"
+                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  />
+                </div>
+                <div class="relative mb-4">
+                  <label
+                    name="machine-category-entry"
+                    class="leading-7 text-sm text-gray-600"
+                  >
+                    Categoria:
+                  </label>
+                  <select
+                    name="machine-category-entry"
+                    id="machine-category-entry"
+                  >
+                    <!-- <div id="reservation-machine-entry-options"></div> -->
+                  </select>
+                </div>
+                <button
+                  id="submit-button-create"
+                  class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                  type="button"
+                >
+                  Crear
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="frame-content lg:w-2.5/4 md:w-2.5/4">
+          <section class="text-gray-600 body-font">
+            <div
+              class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
+            >
+              <div
+                class="lg:w80 md:w80 center bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
+              >
+                <!-- machine data -->
+                <section>
+                  <div
+                    id="machine-data-section"
+                    class="frame-root shadow border-2 border-black hidden"
+                  >
+                    <section class="text-gray-600 body-font">
+                      <div
+                        class="container px-8 py-4 mx-auto flex flex-wrap items-center shadow rounded"
+                      >
+                        <div
+                          class="lg:w80 md:w80 center bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
+                        >
+                          <br />
+                          <div
+                            id="table-machines"
+                            class="relative mb-4 overflow-scroll"
+                          ></div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+    <!-- category data-->
+    <section>
+      <div id="table-category">
+        <div id="category-table-data"></div>
+      </div>
+    </section>
+    <!-- Scripts -->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="module" src="../js/machineFunctions.js"></script>
   </body>
 </html>
