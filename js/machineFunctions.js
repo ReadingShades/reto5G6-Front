@@ -185,8 +185,8 @@ function loadTableTriggers(json_machine_list) {
     for (let i = 0; i < json_machine_list.length; i++) {
         let idMachine = json_machine_list[i].id;
         $(`#show-data-category-${idMachine}`).on('click', function () {
-            let json_machines = $(`#show-data-client-${idMachine}`).attr('data-client');
-            showMachineData(json_machines);
+            let json_category_data = $(`#show-data-category-${idMachine}`).attr('data-category');
+            showCategoryData(idMachine, json_category_data);
         });
         $(`#edit-data-${idMachine}`).on('click', function () {
             let selectorData = getDataFields(idMachine);
@@ -198,6 +198,36 @@ function loadTableTriggers(json_machine_list) {
             deleteMachineOne(idMachine);
         });
     }
+}
+
+function showCategoryData(idMachine, json_category_data) {
+    // target table div
+    let categoryTable = $("#table-category");
+    categoryTable.html('');
+    // Clear machine table
+    let categoryTableData = $('#category-table-data');
+    if (categoryTableData.length) {
+        categoryTableData.remove();
+    }
+    json_category_data = JSON.parse(json_category_data);
+    let myTable = `<h1 class="title-font font-medium text-3xl text-gray-900 justify-center flex">Categoria (Maquina id:${idMachine})</h1>`;
+    myTable += "<table table id='category-table-data' class = 'table-auto min-w-full bg-purple-100'>";
+    myTable += "<thead class = 'bg-white border-b'>";
+    myTable += "<tr>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-left'>id</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>name</th>";
+    myTable += "<th scope='col' class='text-sm font-medium text-gray-900 px-6 py-4 text-center'>description</th>";
+    myTable += "</tr>    ";
+    myTable += "</thead>";
+
+    let idCategory = json_category_data.id;
+    myTable += "<tr class='border-b bg-gray-800 border-gray-900'>";
+    myTable += `<td id='category-id-elem-${idCategory}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap'>${idCategory}</td>`;
+    myTable += `<td id='category-name-elem-${idCategory}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_category_data.name}</td>`;
+    myTable += `<td id='category-description-elem-${idCategory}' class='text-sm text-white font-light px-6 py-4 whitespace-nowrap' contenteditable='true'>${json_category_data.description}</td>`;
+    myTable += "</tr>";
+    myTable += "</table>";
+    $("#table-category").html(myTable);
 }
 
 function getDataFields(id = null) {
